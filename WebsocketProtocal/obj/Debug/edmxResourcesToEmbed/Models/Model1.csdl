@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="siyosane_uwb_prototypeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tb_Device">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DeviceName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DeviceMAC" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DeviceID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="isType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="isSiteID" Type="Int32" />
+    <Property Name="posX" Type="Double" />
+    <Property Name="posY" Type="Double" />
+    <Property Name="posZ" Type="Double" />
+    <Property Name="posQ" Type="Double" />
+    <Property Name="SeatNumber" Type="Int32" />
+    <Property Name="Colors" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsShow" Type="Int32" />
+  </EntityType>
+  <EntityContainer Name="siyosane_uwb_prototypeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tb_Device" EntityType="Self.tb_Device" />
+  </EntityContainer>
+</Schema>

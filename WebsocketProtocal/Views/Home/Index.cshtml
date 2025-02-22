@@ -1,0 +1,23 @@
+﻿<div>
+    Server is running ...
+</div> 
+
+<ul id="messagesList"></ul>
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script>
+    let connection;
+    connection = new WebSocket("ws://localhost:8080/"); 
+    connection.onopen = () => {
+        //console.log("Connected to server");
+        //const li = document.createElement("li");
+        //document.getElementById("messagesList").appendChild(li);
+        connection.send("test");
+    };
+
+    connection.onmessage = (event) => {
+        const li = document.createElement("li");
+        li.textContent = `Client: ${event.data}`;
+        document.getElementById("messagesList").appendChild(li);
+    };
+
+</script>

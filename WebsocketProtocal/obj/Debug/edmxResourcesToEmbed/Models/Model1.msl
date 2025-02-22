@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="siyosane_uwb_prototypeModelStoreContainer" CdmEntityContainer="siyosane_uwb_prototypeEntities">
+    <EntitySetMapping Name="tb_Device">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Device">
+        <MappingFragment StoreEntitySet="tb_Device">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DeviceName" ColumnName="DeviceName" />
+          <ScalarProperty Name="DeviceMAC" ColumnName="DeviceMAC" />
+          <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+          <ScalarProperty Name="isType" ColumnName="isType" />
+          <ScalarProperty Name="isSiteID" ColumnName="isSiteID" />
+          <ScalarProperty Name="posX" ColumnName="posX" />
+          <ScalarProperty Name="posY" ColumnName="posY" />
+          <ScalarProperty Name="posZ" ColumnName="posZ" />
+          <ScalarProperty Name="posQ" ColumnName="posQ" />
+          <ScalarProperty Name="SeatNumber" ColumnName="SeatNumber" />
+          <ScalarProperty Name="Colors" ColumnName="Colors" />
+          <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

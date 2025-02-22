@@ -1,0 +1,117 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|c:\\users\\admin\\source\\repos\\websocketprotocal\\websocketprotocal\\websocketserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\websocketserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\websocketprotocal\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\websocketprotocal\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\websocketprotocal\\views\\client\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\views\\client\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\websocketprotocal\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\websocketprotocal\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{947092E0-4BFA-4959-8450-467B71EF6D7B}|WebsocketProtocal\\WebsocketProtocal.csproj|solutionrelative:websocketprotocal\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Views\\Client\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\Views\\Client\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Views\\Client\\Index.cshtml",
+              "RelativeToolTip": "WebsocketProtocal\\Views\\Client\\Index.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADoAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-20T09:08:23.628Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ClientController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Controllers\\ClientController.cs",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\Controllers\\ClientController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Controllers\\ClientController.cs",
+              "RelativeToolTip": "WebsocketProtocal\\Controllers\\ClientController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T09:08:15.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WebsocketProtocal\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-19T12:47:27.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "WebsocketProtocal\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-19T12:47:24.337Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WebSocketServer.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\WebSocketServer.cs",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\WebSocketServer.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\WebSocketServer.cs*",
+              "RelativeToolTip": "WebsocketProtocal\\WebSocketServer.cs*",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAAAI8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-19T12:46:20.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "WebsocketProtocal\\App_Start\\RouteConfig.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\WebsocketProtocal\\WebsocketProtocal\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "WebsocketProtocal\\App_Start\\RouteConfig.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-19T13:25:22.664Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

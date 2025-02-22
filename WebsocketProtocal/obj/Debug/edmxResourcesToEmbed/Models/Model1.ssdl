@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="siyosane_uwb_prototypeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tb_Device">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeviceName" Type="nvarchar" MaxLength="500" />
+    <Property Name="DeviceMAC" Type="nvarchar" MaxLength="500" />
+    <Property Name="DeviceID" Type="nvarchar" MaxLength="500" />
+    <Property Name="isType" Type="nvarchar" MaxLength="500" />
+    <Property Name="isSiteID" Type="int" />
+    <Property Name="posX" Type="float" />
+    <Property Name="posY" Type="float" />
+    <Property Name="posZ" Type="float" />
+    <Property Name="posQ" Type="float" />
+    <Property Name="SeatNumber" Type="int" />
+    <Property Name="Colors" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsShow" Type="int" />
+  </EntityType>
+  <EntityContainer Name="siyosane_uwb_prototypeModelStoreContainer">
+    <EntitySet Name="tb_Device" EntityType="Self.tb_Device" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

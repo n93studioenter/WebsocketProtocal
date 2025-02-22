@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="siyosane_uwb_prototypeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tb_Device">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeviceName" Type="nvarchar" MaxLength="500" />
+          <Property Name="DeviceMAC" Type="nvarchar" MaxLength="500" />
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="500" />
+          <Property Name="isType" Type="nvarchar" MaxLength="500" />
+          <Property Name="isSiteID" Type="int" />
+          <Property Name="posX" Type="float" />
+          <Property Name="posY" Type="float" />
+          <Property Name="posZ" Type="float" />
+          <Property Name="posQ" Type="float" />
+          <Property Name="SeatNumber" Type="int" />
+          <Property Name="Colors" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsShow" Type="int" />
+        </EntityType>
+        <EntityContainer Name="siyosane_uwb_prototypeModelStoreContainer">
+          <EntitySet Name="tb_Device" EntityType="Self.tb_Device" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="siyosane_uwb_prototypeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tb_Device">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeviceName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceMAC" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="isType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="isSiteID" Type="Int32" />
+          <Property Name="posX" Type="Double" />
+          <Property Name="posY" Type="Double" />
+          <Property Name="posZ" Type="Double" />
+          <Property Name="posQ" Type="Double" />
+          <Property Name="SeatNumber" Type="Int32" />
+          <Property Name="Colors" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="siyosane_uwb_prototypeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tb_Device" EntityType="Self.tb_Device" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="siyosane_uwb_prototypeModelStoreContainer" CdmEntityContainer="siyosane_uwb_prototypeEntities">
+          <EntitySetMapping Name="tb_Device">
+            <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Device">
+              <MappingFragment StoreEntitySet="tb_Device">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DeviceName" ColumnName="DeviceName" />
+                <ScalarProperty Name="DeviceMAC" ColumnName="DeviceMAC" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="isType" ColumnName="isType" />
+                <ScalarProperty Name="isSiteID" ColumnName="isSiteID" />
+                <ScalarProperty Name="posX" ColumnName="posX" />
+                <ScalarProperty Name="posY" ColumnName="posY" />
+                <ScalarProperty Name="posZ" ColumnName="posZ" />
+                <ScalarProperty Name="posQ" ColumnName="posQ" />
+                <ScalarProperty Name="SeatNumber" ColumnName="SeatNumber" />
+                <ScalarProperty Name="Colors" ColumnName="Colors" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

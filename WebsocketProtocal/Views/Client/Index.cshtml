@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h4>Device</h4>
+    <select id="slDevice" class="form-select-sm">
+        @if (ViewBag.ListDevice != null)
+        {
+            foreach (WebsocketProtocal.Models.tb_Device dv in ViewBag.ListDevice)
+            {
+                <option value="@dv.DeviceID">
+                    @dv.DeviceName - @dv.DeviceID
+                </option>
+            }
+        }
+    </select>
+    <button  id="connect" class="btn btn-danger btn-sm">Connect</button>
+    <input  style="display:none"type="text" id="message" placeholder="Type a message" />
+        <button style="display:none" id="send">Send</button>
+    <ul id="messagesList"></ul>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script>
+        let connection;
+
+
+        function performAction() {
+            // Lấy giờ, phút, giây
+            const currentDate = new Date();
+
+            const hours = String(currentDate.getHours()).padStart(2, '0');
+            const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+            const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+            connection.send(`${hours}:${minutes}:${seconds}`);
+        }
+
+        // Gọi hàm mỗi 3 giây (3000 ms)
+       
+        document.getElementById("connect").addEventListener("click", () => {
+            // Kiểm tra nếu đã có kết nối trước đó
+            if (connection && connection.readyState === WebSocket.OPEN) {
+                alert("Already connected!");
+                return;
+            } 
+
+            // Tạo kết nối mới
+            connection = new WebSocket("ws://localhost:8080/");
+
+            connection.onopen = () => {
+                console.log("Connected to server");
+                connection.send("The device," + $("#slDevice").val());
+                const currentDate = new Date();
+
+            
+                const intervalId = setInterval(performAction,1000);
+
+                $("#connect").html("Disconect");
+                //const li = document.createElement("li");
+                //li.textContent = "Connected to server";
+                // document.getElementById("messagesList").appendChild(li);
+            };
+
+            connection.onmessage = (event) => { 
+                const li = document.createElement("li");
+                li.textContent = `${event.data}`;
+                document.getElementById("messagesList").append(li);
+            };
+
+            connection.onerror = (error) => {
+                console.error("WebSocket error: ", error);
+            };
+
+            connection.onclose = () => {
+                connection.send("has closed");
+                console.log("Disconnected from server");
+            };
+        });
+
+        document.getElementById("send").addEventListener("click", () => {
+            if (connection && connection.readyState === WebSocket.OPEN) {
+                const message = document.getElementById("message").value;
+                connection.send(message);
+                document.getElementById("message").value = '';
+            } else {
+                alert("Not connected to the server.");
+            }
+        });
+    </script>
+</body>
+</html>

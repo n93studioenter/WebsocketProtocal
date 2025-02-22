@@ -1,0 +1,185 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Services.Description;
+
+public class WebSocketServer
+{
+    private readonly HttpListener _httpListener;
+    private readonly ConcurrentDictionary<WebSocket, string> _clients = new ConcurrentDictionary<WebSocket, string>();
+
+    private List<string> strClients = new List<string>();
+    Dictionary<string, string> lstDevice = new Dictionary<string, string>();
+    private readonly ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
+    private Timer processingTimer;
+    public WebSocketServer(string uriPrefix)
+    {
+        _httpListener = new HttpListener();
+        _httpListener.Prefixes.Add(uriPrefix);
+    }
+
+    public async Task Start()
+    {
+        _httpListener.Start();
+        System.Diagnostics.Debug.WriteLine("WebSocket server started...");
+
+        while (true)
+        {
+            var context = await _httpListener.GetContextAsync();
+            if (context.Request.IsWebSocketRequest)
+            {
+                var webSocketContext = await context.AcceptWebSocketAsync(null);
+                string clientEndpoint = context.Request.RemoteEndPoint.ToString();
+                _clients.TryAdd(webSocketContext.WebSocket, clientEndpoint);
+
+                string message = "";
+               
+                HandleWebSocket(webSocketContext.WebSocket, clientEndpoint);
+            }
+        }
+    }
+
+    private async Task sendFirtClient(WebSocket webSocket,string message)
+    { 
+        var msgBuffer = Encoding.UTF8.GetBytes(message);
+        await webSocket.SendAsync(new ArraySegment<byte>(msgBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+    private async Task SendWelcomeMessage(WebSocket webSocket)
+    {
+        var welcomeMessage = "Hello! Welcome to the WebSocket server!";
+        var msgBuffer = Encoding.UTF8.GetBytes(welcomeMessage);
+        await webSocket.SendAsync(new ArraySegment<byte>(msgBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+
+    bool readData = false;
+    private async void HandleWebSocket(WebSocket webSocket,string clientEndpoint)
+    {
+        var buffer = new byte[1024 * 4];
+
+        while (webSocket.State == WebSocketState.Open)
+        {
+            try
+            {
+                var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                    var getname = lstDevice.FirstOrDefault(m => m.Value == clientEndpoint).Key;
+                    _clients.TryRemove(webSocket, out _);
+                    lstDevice.Remove(getname);
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the client", CancellationToken.None);
+                    await _clients.Keys.FirstOrDefault().SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(getname + " has disconnected")), WebSocketMessageType.Text, true, CancellationToken.None);
+
+                }
+                else
+                {
+                    var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                    System.Diagnostics.Debug.WriteLine("Received from client: " + message);
+                    messageQueue.Enqueue(message);
+                    if (message.Contains("The device"))
+                    {
+                        StartProcessingTimer();
+                    }
+                    //if (readData == true)
+                    //{
+                    //    if (message.Contains("The device"))
+                    //    {
+                    //        var getsplit = message.Split(',');
+                    //        if (!lstDevice.ContainsKey(getsplit[1]))
+                    //        {
+                    //            lstDevice.Add(getsplit[1], clientEndpoint);
+                    //        }
+                    //        await sendFirtClient(_clients.Keys.FirstOrDefault(), getsplit[1] + " has connected");
+                    //    }
+                    //    foreach (var client in _clients.Keys)
+                    //    {
+                    //        try
+                    //        {
+                    //            if (client.State == WebSocketState.Open && client == webSocket)
+                    //            {
+                    //                if (!message.Contains("The device"))
+                    //                    await client.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes("[Callback from server : ] " + message)), WebSocketMessageType.Text, true, CancellationToken.None);
+                    //            }
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+                    //            System.Diagnostics.Debug.WriteLine($"Error sending to client: {ex.Message}");
+                    //        }
+                    //    }
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in WebSocket communication: {ex.Message}");
+                break;
+            }
+        }
+    }
+    private async void ProcessMessages2(object state)
+    {
+        readData = true;
+        processingTimer = new Timer(ProcessMessages2, null, 10000, Timeout.Infinite); // Xử lý sau 10 giây
+    }
+    private async void ProcessMessages(object state)
+    {
+        var messagesToProcess = new List<string>();
+
+        // Lấy các tin nhắn từ hàng đợi
+        while (messageQueue.TryDequeue(out var message))
+        {
+            messagesToProcess.Add(message);
+        }
+        if (messagesToProcess.Count > 0)
+        {
+            // Xử lý các tin nhắn
+            foreach (var msg in messagesToProcess)
+            {
+                if (msg.Contains("The device"))
+                {
+                    var getsplit = msg.Split(',');
+                    if (!lstDevice.ContainsKey(getsplit[1]))
+                    {
+                        lstDevice.Add(getsplit[1], _clients.First().Value);
+                    }
+                    await NotifyClients($"{getsplit[1]} has connected");
+                }
+                else
+                {
+                    await NotifyClients($"[Callback from server: ] {msg}");
+                }
+            }
+            processingTimer = new Timer(ProcessMessages, null, 10000, Timeout.Infinite); // Xử lý sau 10 giây
+        }
+    }
+    // Khởi động timer
+    private void StartProcessingTimer()
+    {
+        if (processingTimer == null)
+        {
+            processingTimer = new Timer(ProcessMessages, null, 10000, Timeout.Infinite); // Xử lý sau 10 giây
+        }
+    }
+    private async Task NotifyClients(string notification)
+    {
+        var notificationBuffer = Encoding.UTF8.GetBytes(notification);
+        foreach (var client in _clients.Keys)
+        {
+            if (client.State == WebSocketState.Open && client == _clients.Keys.First())
+            {
+                await client.SendAsync(new ArraySegment<byte>(notificationBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+        }
+    }
+    public string[] GetClientList()
+    {
+        return _clients.Values.ToArray();
+    }
+}
