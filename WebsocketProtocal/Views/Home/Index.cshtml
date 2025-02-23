@@ -1,12 +1,156 @@
 ﻿<div>
     Server is running ...
-</div> 
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Zoom and Pan</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #canvasContainer {
+            overflow: hidden;
+            width: 100%;
+            height: 500px;
+            border: 1px solid #000;
+            position: relative;
+        }
 
-<ul id="messagesList"></ul>
+        #myCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .canvasinfo{
+            float:left;
+            width:30%;
+        }
+        .canvasContainerbox{
+            float:left;
+            width:70%;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvasContainerbox">
+        <div id="canvasContainer">
+            <canvas id="myCanvas" width="1411" height="1136"></canvas>
+        </div>
+    </div> 
+    <div class="canvasinfo">
+        <ul id="messagesList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
 <script src="~/Scripts/jquery-3.7.0.min.js"></script>
 <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = $('#canvasContainer');
+
+    let scale = 0.6;
+    let originX = 0;
+    let originY = 0;
+    let isDragging = false;
+    let lastX, lastY;
+    let points = []; // Khai báo mảng để lưu trữ các điểm
+    const img = new Image();
+    // Vẽ hình nền (hoặc hình ảnh) vào canvas
+    $(document).ready(function () {
+       
+        img.src = '/Assets/Images/Floorplane/pngegg.png'; // Thay URL bằng đường dẫn đến hình ảnh bạn muốn dùng
+        img.onload = function () {
+            draw(); // Vẽ hình ảnh khi nó được tải
+        };
+    });
+    // Sự kiện chuột cho pan
+    container.mousedown(function (e) {
+        isDragging = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+    });
+
+    $(document).mouseup(function () {
+        isDragging = false;
+    });
+
+    container.mousemove(function (e) {
+        if (isDragging) {
+            const dx = e.offsetX - lastX;
+            const dy = e.offsetY - lastY;
+            originX += dx;
+            originY += dy;
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+            draw();
+        }
+    });
+
+    // Sự kiện scroll cho zoom
+    container.on('wheel', function (e) {
+        e.preventDefault();
+
+        const mouseX = e.offsetX;
+        const mouseY = e.offsetY;
+
+        const scaleAmount = e.originalEvent.deltaY > 0 ? 0.9 : 1.1;
+        const newScale = scale * scaleAmount;
+
+        // Tính toán vị trí mới của gốc
+        originX += (mouseX - originX) * (1 - scaleAmount);
+        originY += (mouseY - originY) * (1 - scaleAmount);
+
+        scale = newScale;
+        draw();
+    });
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(originX, originY);
+        ctx.scale(scale, scale);
+
+        // Vẽ hình ảnh
+        ctx.drawImage(img, 0, 0, img.width, img.height); // Vẽ hình ảnh với kích thước thực
+
+        // Vẽ các điểm
+        points.forEach(point => drawPoint(point.x, point.y));
+
+        ctx.restore();
+    }
+
+    function drawPoint(x, y) {
+        // Vẽ hình tròn lớn màu trắng
+        ctx.fillStyle = 'white'; // Màu trắng
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2); // Hình tròn lớn
+        ctx.fill();
+
+        // Vẽ hình tròn nhỏ màu đỏ
+        ctx.fillStyle = 'red'; // Màu đỏ
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2); // Hình tròn nhỏ
+        ctx.fill();
+
+        // Vẽ văn bản
+        ctx.fillStyle = 'black'; // Màu chữ
+        ctx.font = '12px Arial'; // Font chữ
+        ctx.textAlign = 'center'; // Căn giữa
+        ctx.fillText('aCB', x, y - 10); // Vẽ văn bản phía trên
+    }
+
+    // Sự kiện nút nhấn để vẽ hình tròn
+    $('#drawPointBtn').click(function () {
+        points.push({ x: 220, y: 220 }); // Thêm điểm mới vào mảng
+        draw(); // Vẽ lại canvas
+    });
+</script>
+<script>
     let connection;
-    connection = new WebSocket("ws://localhost:8080/"); 
+    connection = new WebSocket("ws://localhost:8080/");
     connection.onopen = () => {
         //console.log("Connected to server");
         //const li = document.createElement("li");
@@ -17,7 +161,33 @@
     connection.onmessage = (event) => {
         const li = document.createElement("li");
         li.textContent = `Client: ${event.data}`;
+
+        //Trường hợp là device kết nối
+        if (event.data.includes('has connected')) {
+            getDevicebyname(event.data)
+        }
+
+
+        // Vẽ điểm hình tròn tại tọa độ (20, 20)
         document.getElementById("messagesList").appendChild(li);
     };
 
+    function getDevicebyname(DeviceName) {
+        var param = {
+            DeviceName: DeviceName
+        }
+        $.ajax({
+            url: '/Home/getDevicebyname',
+            data: param,
+            dataType: 'json',
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                alert((result.posX * 1000) +"   " + (result.posY * 1000))
+                points.push({ x: (result.posX * 1000), y: (result.posY * 1000) }); // Thêm điểm mới vào mảng 
+                draw(); // Vẽ lại canvas
+            }
+        });
+    }
+    //get position from db
 </script>

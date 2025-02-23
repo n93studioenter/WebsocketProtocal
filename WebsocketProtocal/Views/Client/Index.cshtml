@@ -53,8 +53,7 @@
             connection.onopen = () => {
                 console.log("Connected to server");
                 connection.send("The device," + $("#slDevice").val());
-                const currentDate = new Date();
-
+                const currentDate = new Date(); 
             
                 const intervalId = setInterval(performAction,1000);
 

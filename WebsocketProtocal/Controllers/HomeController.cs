@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebsocketProtocal.Models;
 
 namespace WebsocketProtocal.Controllers
 {
@@ -19,7 +20,13 @@ namespace WebsocketProtocal.Controllers
 
             return View();
         }
-
+        public JsonResult getDevicebyname(string DeviceName)
+        {
+            var getsplit = DeviceName.Split(' ');
+            var db = new siyosane_uwb_prototypeEntities();
+            var tb_Device = db.tb_Device.ToList().Where(m => m.DeviceID.Contains(getsplit[0].Trim())).FirstOrDefault();
+            return Json(tb_Device, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

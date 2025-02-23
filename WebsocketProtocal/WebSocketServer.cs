@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Services.Description;
+using WebsocketProtocal.Models;
 
 public class WebSocketServer
 {
@@ -18,6 +19,9 @@ public class WebSocketServer
     Dictionary<string, string> lstDevice = new Dictionary<string, string>();
     private readonly ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
     private Timer processingTimer;
+    private WebSocket firtWebsocket;
+    private List<tb_Device> lstDevices = new List<tb_Device>();
+    private bool isfirstConnect = false;
     public WebSocketServer(string uriPrefix)
     {
         _httpListener = new HttpListener();
@@ -60,6 +64,22 @@ public class WebSocketServer
     bool readData = false;
     private async void HandleWebSocket(WebSocket webSocket,string clientEndpoint)
     {
+        if (firtWebsocket == null)
+        {
+            firtWebsocket = webSocket;
+            //Trường hợp kết nối lần đầu
+            if (isfirstConnect == false)
+                isfirstConnect = true;
+            else
+            {
+                if (isfirstConnect == true)
+                {
+
+                }
+            }
+                
+
+        }
         var buffer = new byte[1024 * 4];
 
         while (webSocket.State == WebSocketState.Open)
@@ -73,20 +93,40 @@ public class WebSocketServer
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     var getname = lstDevice.FirstOrDefault(m => m.Value == clientEndpoint).Key;
                     _clients.TryRemove(webSocket, out _);
-                    lstDevice.Remove(getname);
                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the client", CancellationToken.None);
-                    await _clients.Keys.FirstOrDefault().SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(getname + " has disconnected")), WebSocketMessageType.Text, true, CancellationToken.None);
-
+                    if (webSocket != firtWebsocket)
+                    {
+                        lstDevice.Remove(getname);
+                        await _clients.Keys.FirstOrDefault().SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(getname + " has disconnected")), WebSocketMessageType.Text, true, CancellationToken.None);
+                    }
+                    else
+                        firtWebsocket = null;
                 }
                 else
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     System.Diagnostics.Debug.WriteLine("Received from client: " + message);
-                    messageQueue.Enqueue(message);
                     if (message.Contains("The device"))
                     {
-                        StartProcessingTimer();
+                        // StartProcessingTimer();
+                        var getsplit = message.Split(',');
+                        if (!lstDevice.ContainsKey(getsplit[1]))
+                        {
+                            lstDevice.Add(getsplit[1], clientEndpoint);
+                        }
+
+                        //add device vào lstDevices mục đích để clientManager load lại
+                        tb_Device tb_Device = new tb_Device();
+                        tb_Device.DeviceName = message;
+                        lstDevices.Add(tb_Device);
+                        await sendFirtClient(firtWebsocket, getsplit[1] + " has connected");
                     }
+                    else
+                    {
+                        messageQueue.Enqueue(message);
+                        
+                    }
+                   
                     //if (readData == true)
                     //{
                     //    if (message.Contains("The device"))
@@ -132,6 +172,7 @@ public class WebSocketServer
     {
         var messagesToProcess = new List<string>();
 
+
         // Lấy các tin nhắn từ hàng đợi
         while (messageQueue.TryDequeue(out var message))
         {
@@ -172,7 +213,7 @@ public class WebSocketServer
         var notificationBuffer = Encoding.UTF8.GetBytes(notification);
         foreach (var client in _clients.Keys)
         {
-            if (client.State == WebSocketState.Open && client == _clients.Keys.First())
+            if (client.State == WebSocketState.Open && client == firtWebsocket)
             {
                 await client.SendAsync(new ArraySegment<byte>(notificationBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
             }
