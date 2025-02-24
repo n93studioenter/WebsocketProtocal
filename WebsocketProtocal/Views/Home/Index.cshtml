@@ -139,10 +139,12 @@
 
         // Vẽ hình ảnh
         ctx.drawImage(img, 0, 0, img.width, img.height); // Vẽ hình ảnh với kích thước thực
-        drawcondinate() 
+        /*drawcondinate();*/
         // Vẽ các điểm
-        points.forEach(point => drawPoint(point.x, point.y, point.DeviceID));
-      
+        // points.forEach(point => drawPoint(point.x, point.y, point.DeviceID));
+        for (i = 0; i < points.length; i++) {
+            drawPoint(points[i].x, points[i].y, points[i].DeviceID);
+        }
         ctx.restore();
     }
 
@@ -202,8 +204,23 @@
             }
             //Xử lý json
             else {
-                const data = JSON.parse(event.data); // Chuyển đổi phản hồi thành JSON
-                console.log(data)
+                const results = JSON.parse(event.data); // Chuyển đổi phản hồi thành JSON
+                // Lấy giá trị TagID, getX, getY
+                $.each(results, function (index, item) {
+                    var tagID = item.TagID;
+                    var getX = item.getX;
+                    var getY = item.getY;
+                    points.forEach(point => {
+                        if (point.DeviceID === tagID) {
+                            // Nếu đã tồn tại, cập nhật x, y
+                            point.x = getX * 1000;
+                            point.y = getY * 1000; 
+                        }
+                    });
+
+                    console.log(points)
+                    draw(); // Vẽ lại canvas
+                });
             }
         }
         // Vẽ điểm hình tròn tại tọa độ (20, 20)

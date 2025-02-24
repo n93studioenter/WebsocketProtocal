@@ -39,9 +39,9 @@
 
             //connection.send(`${x + randomNumberx},${y + randomNumbery}`);
             //console.log(`${x + randomNumberx},${y + randomNumbery}`)
-            var rA = getRandomFloatInRange(0, 1);
-            var rB = getRandomFloatInRange(0, 1);
-            var rC = getRandomFloatInRange(0, 1); 
+            var rA = getRandomFloatInRange(100, 200);
+            var rB = getRandomFloatInRange(100, 200);
+            var rC = getRandomFloatInRange(100, 200);
 
             var data = {
                 "tagID": $("#slDevice").val(),
@@ -90,10 +90,10 @@
                     }
                 });
                 if (isType == "Tag") {
+                    alert("tag do")
                     const intervalId = setInterval(performAction, 400);
                 }
               
-
                 $("#connect").html("Disconect");
                 //const li = document.createElement("li");
                 //li.textContent = "Connected to server";

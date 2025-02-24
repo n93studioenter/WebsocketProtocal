@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebsocketProtocal.Models;
+using static WebSocketServer;
 
 namespace WebsocketProtocal.Controllers
 {
@@ -21,6 +23,11 @@ namespace WebsocketProtocal.Controllers
             ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+        public JsonResult findPointTag(string data)
+        {
+            List<Tag> tags = JsonConvert.DeserializeObject<List<Tag>>(data);
+            return Json(tags, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getDevicebyname(string DeviceName)
         {
