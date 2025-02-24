@@ -25,6 +25,8 @@
         .canvasinfo{
             float:left;
             width:30%;
+            max-height:200px;
+            overflow:scroll;
         }
         .canvasContainerbox{
             float:left;
@@ -35,7 +37,7 @@
 <body>
     <div class="canvasContainerbox">
         <div id="canvasContainer">
-            <canvas id="myCanvas" width="1411" height="1136"></canvas>
+            <canvas id="myCanvas" width="1200" height="730" style="border:1px solid" ></canvas>
         </div>
     </div> 
     <div class="canvasinfo">
@@ -51,7 +53,7 @@
     const ctx = canvas.getContext('2d');
     const container = $('#canvasContainer');
 
-    let scale = 0.6;
+    let scale = 0.5;
     let originX = 0;
     let originY = 0;
     let isDragging = false;
@@ -61,7 +63,7 @@
     // Vẽ hình nền (hoặc hình ảnh) vào canvas
     $(document).ready(function () {
        
-        img.src = '/Assets/Images/Floorplane/pngegg.png'; // Thay URL bằng đường dẫn đến hình ảnh bạn muốn dùng
+        img.src = '/Assets/Images/Floorplane/Capture.png'; // Thay URL bằng đường dẫn đến hình ảnh bạn muốn dùng
         img.onload = function () {
             draw(); // Vẽ hình ảnh khi nó được tải
         };
@@ -106,7 +108,29 @@
         scale = newScale;
         draw();
     });
+    function drawcondinate() {
+        ctx.fillStyle = 'black'; // Màu chữ
+        ctx.font = '15px Arial'; // Font chữ
+        ctx.textAlign = 'center'; // Căn giữa
+        ctx.fillText("1", 100, 20); // Vẽ văn bản phía trên
+        ctx.fillText("2", 200, 20); // Vẽ văn bản phía trên
+        ctx.fillText("3", 300, 20); // Vẽ văn bản phía trên
+        ctx.fillText("4", 400, 20); // Vẽ văn bản phía trên
+        ctx.fillText("5",500, 20); // Vẽ văn bản phía trên
+        ctx.fillText("6", 600, 20); // Vẽ văn bản phía trên
+        ctx.fillText("7",700, 20); // Vẽ văn bản phía trên
+        ctx.fillText("8", 800, 20); // Vẽ văn bản phía trên
+        ctx.fillText("9", 900, 20); // Vẽ văn bản phía trên
+        ctx.fillText("10", 1000, 20); // Vẽ văn bản phía trên
 
+        ctx.fillText("1", 20, 100); // Vẽ văn bản phía trên
+        ctx.fillText("2", 20, 200); // Vẽ văn bản phía trên
+        ctx.fillText("3", 20, 300); // Vẽ văn bản phía trên
+        ctx.fillText("4", 20, 400); // Vẽ văn bản phía trên
+        ctx.fillText("5", 20, 500); // Vẽ văn bản phía trên
+        ctx.fillText("6", 20, 600); // Vẽ văn bản phía trên
+        ctx.fillText("7", 20, 700); // Vẽ văn bản phía trên 
+    }
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
@@ -115,14 +139,20 @@
 
         // Vẽ hình ảnh
         ctx.drawImage(img, 0, 0, img.width, img.height); // Vẽ hình ảnh với kích thước thực
-
+        drawcondinate() 
         // Vẽ các điểm
-        points.forEach(point => drawPoint(point.x, point.y));
-
+        points.forEach(point => drawPoint(point.x, point.y, point.DeviceID));
+      
         ctx.restore();
     }
 
-    function drawPoint(x, y) {
+    function drawPoint(x, y, DeviceID) {
+        // Vẽ bóng đổ cho hình tròn lớn
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 10;
+
         // Vẽ hình tròn lớn màu trắng
         ctx.fillStyle = 'white'; // Màu trắng
         ctx.beginPath();
@@ -132,14 +162,14 @@
         // Vẽ hình tròn nhỏ màu đỏ
         ctx.fillStyle = 'red'; // Màu đỏ
         ctx.beginPath();
-        ctx.arc(x, y, 5, 0, Math.PI * 2); // Hình tròn nhỏ
+        ctx.arc(x, y, 10, 0, Math.PI * 2); // Hình tròn nhỏ
         ctx.fill();
 
         // Vẽ văn bản
         ctx.fillStyle = 'black'; // Màu chữ
-        ctx.font = '12px Arial'; // Font chữ
+        ctx.font = '15px Arial'; // Font chữ
         ctx.textAlign = 'center'; // Căn giữa
-        ctx.fillText('aCB', x, y - 10); // Vẽ văn bản phía trên
+        ctx.fillText(DeviceID, x, y - 25); // Vẽ văn bản phía trên
     }
 
     // Sự kiện nút nhấn để vẽ hình tròn
@@ -166,12 +196,31 @@
         if (event.data.includes('has connected')) {
             getDevicebyname(event.data)
         }
-
+        if (event.data.includes('has disconnected')) {
+            deleteDevicebyname(event.data)
+        }
 
         // Vẽ điểm hình tròn tại tọa độ (20, 20)
         document.getElementById("messagesList").appendChild(li);
     };
-
+    function deleteDevicebyname(DeviceName) {
+        
+        var param = {
+            DeviceName: DeviceName
+        }
+        $.ajax({
+            url: '/Home/getDevicebyname',
+            data: param,
+            dataType: 'json',
+            type: 'GET',
+            cache: false,
+            success: function (result) {  
+                points = points.filter(point => point.x !== (result.posX*1000) || point.y !== (result.posY*1000));
+                console.log(points)
+                draw(); // Vẽ lại canvas
+            }
+        });
+    }
     function getDevicebyname(DeviceName) {
         var param = {
             DeviceName: DeviceName
@@ -183,8 +232,7 @@
             type: 'GET',
             cache: false,
             success: function (result) {
-                alert((result.posX * 1000) +"   " + (result.posY * 1000))
-                points.push({ x: (result.posX * 1000), y: (result.posY * 1000) }); // Thêm điểm mới vào mảng 
+                points.push({ x: (result.posX * 1000), y: (result.posY * 1000), DeviceID: result.DeviceID }); // Thêm điểm mới vào mảng 
                 draw(); // Vẽ lại canvas
             }
         });

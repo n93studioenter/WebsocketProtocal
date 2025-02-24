@@ -26,16 +26,32 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script>
         let connection;
+        var x = 0;
+        var y = 0;
+        var isType = "";
+        function getRandomFloatInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        function performAction() { 
+            //let randomNumberx = getRandomFloatInRange(0.05, 0.01);
+            //let randomNumbery = getRandomFloatInRange(0.05, 0.01);
 
+            //connection.send(`${x + randomNumberx},${y + randomNumbery}`);
+            //console.log(`${x + randomNumberx},${y + randomNumbery}`)
 
-        function performAction() {
-            // Lấy giờ, phút, giây
-            const currentDate = new Date();
+            var data = {
+                "tagID": 1,
+                "timestamp": 1,
+                "anchors": [
+                    { "id": 1, "distance": 3 },
+                    { "id": 2, "distance": 4 },
+                    { "id": 3, "distance": 6 }
+                ]
+            };
 
-            const hours = String(currentDate.getHours()).padStart(2, '0');
-            const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-            const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-            connection.send(`${hours}:${minutes}:${seconds}`);
+            // Chuyển đổi đối tượng thành chuỗi JSON
+            var jsonString = JSON.stringify(data);
+            connection.send(jsonString);
         }
 
         // Gọi hàm mỗi 3 giây (3000 ms)
@@ -52,10 +68,27 @@
 
             connection.onopen = () => {
                 console.log("Connected to server");
-                connection.send("The device," + $("#slDevice").val());
-                const currentDate = new Date(); 
-            
-                const intervalId = setInterval(performAction,1000);
+                connection.send("The device," + $("#slDevice").val()); 
+                var param = {
+                    DeviceName: $("#slDevice").val()
+                }
+                $.ajax({
+                    url: '/Home/getDevicebyname',
+                    data: param,
+                    dataType: 'json',
+                    type: 'GET',
+                    cache: false,
+                    async: false, // Không nên sử dụng
+                    success: function (result) {
+                        x = result.posX;
+                        y = result.posY;
+                        isType = result.isType;
+                    }
+                });
+                if (isType == "Tag") {
+                    const intervalId = setInterval(performAction, 400);
+                }
+              
 
                 $("#connect").html("Disconect");
                 //const li = document.createElement("li");

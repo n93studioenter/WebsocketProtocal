@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Services.Description;
+using WebsocketProtocal;
 using WebsocketProtocal.Models;
 
 public class WebSocketServer
@@ -61,7 +63,7 @@ public class WebSocketServer
         await webSocket.SendAsync(new ArraySegment<byte>(msgBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    bool readData = false;
+    bool readData = true;
     private async void HandleWebSocket(WebSocket webSocket,string clientEndpoint)
     {
         if (firtWebsocket == null)
@@ -72,9 +74,15 @@ public class WebSocketServer
                 isfirstConnect = true;
             else
             {
+                //trường hợp reconnect
                 if (isfirstConnect == true)
                 {
-
+                    foreach(var item in lstDevices)
+                    {
+                        var getsplit = item.DeviceName.Split(',');
+                        await sendFirtClient(firtWebsocket, getsplit[1] + " has connected");
+                    }
+                    
                 }
             }
                 
@@ -93,11 +101,14 @@ public class WebSocketServer
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     var getname = lstDevice.FirstOrDefault(m => m.Value == clientEndpoint).Key;
                     _clients.TryRemove(webSocket, out _);
-                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the client", CancellationToken.None);
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed bxy the client", CancellationToken.None);
                     if (webSocket != firtWebsocket)
                     {
                         lstDevice.Remove(getname);
-                        await _clients.Keys.FirstOrDefault().SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(getname + " has disconnected")), WebSocketMessageType.Text, true, CancellationToken.None);
+                        tb_Device tb_Device = lstDevices.Where(m => m.DeviceName.Contains(getname)).FirstOrDefault();
+                        if (tb_Device != null)
+                            lstDevices.Remove(tb_Device);
+                        await firtWebsocket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(getname + " has disconnected")), WebSocketMessageType.Text, true, CancellationToken.None);
                     }
                     else
                         firtWebsocket = null;
@@ -108,7 +119,7 @@ public class WebSocketServer
                     System.Diagnostics.Debug.WriteLine("Received from client: " + message);
                     if (message.Contains("The device"))
                     {
-                        // StartProcessingTimer();
+                         StartProcessingTimer();
                         var getsplit = message.Split(',');
                         if (!lstDevice.ContainsKey(getsplit[1]))
                         {
@@ -123,8 +134,10 @@ public class WebSocketServer
                     }
                     else
                     {
-                        messageQueue.Enqueue(message);
-                        
+                        if (readData == true)
+                        {
+                            messageQueue.Enqueue(message); 
+                        }
                     }
                    
                     //if (readData == true)
@@ -172,7 +185,6 @@ public class WebSocketServer
     {
         var messagesToProcess = new List<string>();
 
-
         // Lấy các tin nhắn từ hàng đợi
         while (messageQueue.TryDequeue(out var message))
         {
@@ -197,7 +209,7 @@ public class WebSocketServer
                     await NotifyClients($"[Callback from server: ] {msg}");
                 }
             }
-            processingTimer = new Timer(ProcessMessages, null, 10000, Timeout.Infinite); // Xử lý sau 10 giây
+            processingTimer = new Timer(ProcessMessages, null, 2000, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     // Khởi động timer
@@ -205,7 +217,7 @@ public class WebSocketServer
     {
         if (processingTimer == null)
         {
-            processingTimer = new Timer(ProcessMessages, null, 10000, Timeout.Infinite); // Xử lý sau 10 giây
+            processingTimer = new Timer(ProcessMessages, null,10000, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     private async Task NotifyClients(string notification)
@@ -223,4 +235,17 @@ public class WebSocketServer
     {
         return _clients.Values.ToArray();
     }
+    public class Tag
+    {
+        public int TagID { get; set; }
+        public int Timestamp { get; set; }
+        public List<Anchor> Anchors { get; set; }
+    }
+
+    public class Anchor
+    {
+        public int Id { get; set; }
+        public float Distance { get; set; }
+    }
+
 }

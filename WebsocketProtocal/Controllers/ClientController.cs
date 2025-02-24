@@ -15,5 +15,16 @@ namespace WebsocketProtocal.Controllers
             ViewBag.ListDevice = db.tb_Device.ToList();
             return View();
         }
+        public ActionResult IndexTag()
+        {
+            return View();
+        }
+        public JsonResult getDevicebyname(string DeviceName)
+        {
+            var getsplit = DeviceName.Split(' ');
+            var db = new siyosane_uwb_prototypeEntities();
+            var tb_Device = db.tb_Device.ToList().Where(m => m.DeviceID.Contains(getsplit[0].Trim())).FirstOrDefault();
+            return Json(tb_Device, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace WebsocketProtocal.Controllers
     {
         public ActionResult Index()
         {
+            //test thuật toán tam giác
+            var getpoint = Helper.getDeviceLocation(2000,7000,3000,0,8,0,0,0,7); 
             return View();
         }
 
