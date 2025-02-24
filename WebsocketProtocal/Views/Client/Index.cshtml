@@ -29,23 +29,27 @@
         var x = 0;
         var y = 0;
         var isType = "";
+        var distanceA = 3;
+        var distanceB =7;
+        var distanceC = 2;
         function getRandomFloatInRange(min, max) {
             return Math.random() * (max - min) + min;
         }
-        function performAction() { 
-            //let randomNumberx = getRandomFloatInRange(0.05, 0.01);
-            //let randomNumbery = getRandomFloatInRange(0.05, 0.01);
+        function performAction() {  
 
             //connection.send(`${x + randomNumberx},${y + randomNumbery}`);
             //console.log(`${x + randomNumberx},${y + randomNumbery}`)
+            var rA = getRandomFloatInRange(0, 1);
+            var rB = getRandomFloatInRange(0, 1);
+            var rC = getRandomFloatInRange(0, 1); 
 
             var data = {
-                "tagID": 1,
+                "tagID": $("#slDevice").val(),
                 "timestamp": 1,
                 "anchors": [
-                    { "id": 1, "distance": 3 },
-                    { "id": 2, "distance": 4 },
-                    { "id": 3, "distance": 6 }
+                    { "id": 'D626', "distance": distanceA + rA },
+                    { "id": '952E', "distance": distanceB + rB },
+                    { "id": '0529', "distance": distanceC + rC }
                 ]
             };
 
@@ -99,6 +103,7 @@
             connection.onmessage = (event) => { 
                 const li = document.createElement("li");
                 li.textContent = `${event.data}`;
+
                 document.getElementById("messagesList").append(li);
             };
 

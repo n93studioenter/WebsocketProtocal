@@ -196,10 +196,16 @@
         if (event.data.includes('has connected')) {
             getDevicebyname(event.data)
         }
-        if (event.data.includes('has disconnected')) {
-            deleteDevicebyname(event.data)
+        else {
+            if (event.data.includes('has disconnected')) {
+                deleteDevicebyname(event.data)
+            }
+            //Xử lý json
+            else {
+                const data = JSON.parse(event.data); // Chuyển đổi phản hồi thành JSON
+                console.log(data)
+            }
         }
-
         // Vẽ điểm hình tròn tại tọa độ (20, 20)
         document.getElementById("messagesList").appendChild(li);
     };

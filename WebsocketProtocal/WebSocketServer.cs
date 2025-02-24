@@ -136,7 +136,8 @@ public class WebSocketServer
                     {
                         if (readData == true)
                         {
-                            messageQueue.Enqueue(message); 
+                            messageQueue.Enqueue(message);
+
                         }
                     }
                    
@@ -192,24 +193,31 @@ public class WebSocketServer
         }
         if (messagesToProcess.Count > 0)
         {
+            List<Tag> lstTag = new List<Tag>();
             // Xử lý các tin nhắn
             foreach (var msg in messagesToProcess)
             {
-                if (msg.Contains("The device"))
+
+                try
                 {
-                    var getsplit = msg.Split(',');
-                    if (!lstDevice.ContainsKey(getsplit[1]))
-                    {
-                        lstDevice.Add(getsplit[1], _clients.First().Value);
-                    }
-                    await NotifyClients($"{getsplit[1]} has connected");
+                    Tag tag = JsonConvert.DeserializeObject<Tag>(msg);
+                    lstTag.Add(tag);
                 }
-                else
+                catch(Exception ex)
                 {
-                    await NotifyClients($"[Callback from server: ] {msg}");
+
                 }
             }
-            processingTimer = new Timer(ProcessMessages, null, 2000, Timeout.Infinite); // Xử lý sau 10 giây
+            var highestPointsByType = lstTag
+         .GroupBy(a => a.TagID) // Nhóm theo TagID
+         .Select(g => g.OrderByDescending(a => a.Timestamp).FirstOrDefault()) // Lấy đối tượng có Timestamp mới nhất
+         .ToList(); // Chuyển đổi kết quả về danh sách
+
+            // Chuyển đổi danh sách sang JSON
+
+            string jsonResult = JsonConvert.SerializeObject(highestPointsByType, Formatting.Indented);
+            NotifyClients(jsonResult);
+            processingTimer = new Timer(ProcessMessages, null, 3000, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     // Khởi động timer
@@ -217,7 +225,7 @@ public class WebSocketServer
     {
         if (processingTimer == null)
         {
-            processingTimer = new Timer(ProcessMessages, null,10000, Timeout.Infinite); // Xử lý sau 10 giây
+            processingTimer = new Timer(ProcessMessages, null,3000, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     private async Task NotifyClients(string notification)
@@ -237,14 +245,14 @@ public class WebSocketServer
     }
     public class Tag
     {
-        public int TagID { get; set; }
+        public string TagID { get; set; }
         public int Timestamp { get; set; }
         public List<Anchor> Anchors { get; set; }
     }
 
     public class Anchor
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public float Distance { get; set; }
     }
 
