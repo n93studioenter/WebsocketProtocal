@@ -6,6 +6,18 @@
     <edmx:Diagrams>
       <Diagram DiagramId="1519f957815440fe9c226e8ea2e8d56c" Name="Diagram1">
         <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_Device" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_account" Width="1.5" PointX="3.75" PointY="0.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_BlockZone" Width="1.5" PointX="3.75" PointY="3.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_BlockZoneDetail" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_Department" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_Floorplan" Width="1.5" PointX="5.75" PointY="3.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_GPSLocation" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_HistoryZone" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_MQTT" Width="1.5" PointX="7.75" PointY="4.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_Site" Width="1.5" PointX="4.75" PointY="7.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_Staff" Width="1.5" PointX="6.75" PointY="8.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_tracker" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="siyosane_uwb_prototypeModel.tb_UWBLocation" Width="1.5" PointX="9.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

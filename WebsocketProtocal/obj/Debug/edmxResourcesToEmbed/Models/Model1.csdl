@@ -20,5 +20,159 @@
   </EntityType>
   <EntityContainer Name="siyosane_uwb_prototypeEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="tb_Device" EntityType="Self.tb_Device" />
+    <EntitySet Name="tb_account" EntityType="siyosane_uwb_prototypeModel.tb_account" />
+    <EntitySet Name="tb_BlockZone" EntityType="siyosane_uwb_prototypeModel.tb_BlockZone" />
+    <EntitySet Name="tb_BlockZoneDetail" EntityType="siyosane_uwb_prototypeModel.tb_BlockZoneDetail" />
+    <EntitySet Name="tb_Department" EntityType="siyosane_uwb_prototypeModel.tb_Department" />
+    <EntitySet Name="tb_Floorplan" EntityType="siyosane_uwb_prototypeModel.tb_Floorplan" />
+    <EntitySet Name="tb_GPSLocation" EntityType="siyosane_uwb_prototypeModel.tb_GPSLocation" />
+    <EntitySet Name="tb_HistoryZone" EntityType="siyosane_uwb_prototypeModel.tb_HistoryZone" />
+    <EntitySet Name="tb_MQTT" EntityType="siyosane_uwb_prototypeModel.tb_MQTT" />
+    <EntitySet Name="tb_Site" EntityType="siyosane_uwb_prototypeModel.tb_Site" />
+    <EntitySet Name="tb_Staff" EntityType="siyosane_uwb_prototypeModel.tb_Staff" />
+    <EntitySet Name="tb_tracker" EntityType="siyosane_uwb_prototypeModel.tb_tracker" />
+    <EntitySet Name="tb_UWBLocation" EntityType="siyosane_uwb_prototypeModel.tb_UWBLocation" />
   </EntityContainer>
+  <EntityType Name="tb_account">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AccPassword" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Fullname" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tb_BlockZone">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SiteID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tb_BlockZoneDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Idparent" Type="Int32" />
+    <Property Name="Pointx" Type="Double" />
+    <Property Name="Pointy" Type="Double" />
+  </EntityType>
+  <EntityType Name="tb_Department">
+    <Key>
+      <PropertyRef Name="DepartmentID" />
+    </Key>
+    <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tb_Floorplan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SiteID" Type="Int32" />
+    <Property Name="FloorplanName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="PathLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="FlWidth" Type="Int32" />
+    <Property Name="FlHeight" Type="Int32" />
+    <Property Name="CanvasTop" Type="Int32" />
+    <Property Name="CanvasLeft" Type="Int32" />
+    <Property Name="CenterX" Type="Int32" />
+    <Property Name="CenterY" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tb_GPSLocation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TrackerID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Latitude" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Longitude" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Speed" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Direction" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Byte1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="Byte2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="Byte3" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="Byte4" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="atTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tb_HistoryZone">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TagId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ZoneId" Type="Int32" />
+    <Property Name="ZoneName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="States" Type="Int32" />
+    <Property Name="Ins" Type="DateTime" Precision="3" />
+    <Property Name="Out" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tb_MQTT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TopicName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MQTTUser" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MQTTPassword" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MQTTServer" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MQTTWebsocketPort" Type="Int32" />
+    <Property Name="MQTTNormalPort" Type="Int32" />
+    <Property Name="MQTTSecurePort" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tb_Site">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SiteName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CanvasWidth" Type="Int32" />
+    <Property Name="CanvasHeight" Type="Int32" />
+    <Property Name="InitiatorX" Type="Int32" />
+    <Property Name="InitiatorY" Type="Int32" />
+    <Property Name="SiteDistance" Type="Int32" />
+    <Property Name="isRatio" Type="Double" />
+    <Property Name="isRatioDefault" Type="Double" />
+    <Property Name="isRatioZoom" Type="Double" />
+  </EntityType>
+  <EntityType Name="tb_Staff">
+    <Key>
+      <PropertyRef Name="StaffID" />
+    </Key>
+    <Property Name="StaffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Id_Department" Type="Int32" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Id_Site" Type="Int32" />
+    <Property Name="ID_Device" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Images" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tb_tracker">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TrackerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="AccountID" Type="Int32" />
+    <Property Name="TopicID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tb_UWBLocation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="gatewayID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="gatewayMAC" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="tagID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="tagMAC" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="getX" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="getY" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="getZ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="getRSSI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="atTime" Type="DateTime" Precision="3" />
+    <Property Name="ZoneID" Type="Int32" />
+  </EntityType>
 </Schema>

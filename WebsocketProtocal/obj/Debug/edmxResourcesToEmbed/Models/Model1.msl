@@ -20,5 +20,159 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_account">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_account">
+        <MappingFragment StoreEntitySet="tb_account">
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="AccPassword" ColumnName="AccPassword" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_BlockZone">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_BlockZone">
+        <MappingFragment StoreEntitySet="tb_BlockZone">
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_BlockZoneDetail">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_BlockZoneDetail">
+        <MappingFragment StoreEntitySet="tb_BlockZoneDetail">
+          <ScalarProperty Name="Pointy" ColumnName="Pointy" />
+          <ScalarProperty Name="Pointx" ColumnName="Pointx" />
+          <ScalarProperty Name="Idparent" ColumnName="Idparent" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Department">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Department">
+        <MappingFragment StoreEntitySet="tb_Department">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Floorplan">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Floorplan">
+        <MappingFragment StoreEntitySet="tb_Floorplan">
+          <ScalarProperty Name="CenterY" ColumnName="CenterY" />
+          <ScalarProperty Name="CenterX" ColumnName="CenterX" />
+          <ScalarProperty Name="CanvasLeft" ColumnName="CanvasLeft" />
+          <ScalarProperty Name="CanvasTop" ColumnName="CanvasTop" />
+          <ScalarProperty Name="FlHeight" ColumnName="FlHeight" />
+          <ScalarProperty Name="FlWidth" ColumnName="FlWidth" />
+          <ScalarProperty Name="PathLocation" ColumnName="PathLocation" />
+          <ScalarProperty Name="FloorplanName" ColumnName="FloorplanName" />
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_GPSLocation">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_GPSLocation">
+        <MappingFragment StoreEntitySet="tb_GPSLocation">
+          <ScalarProperty Name="atTime" ColumnName="atTime" />
+          <ScalarProperty Name="Byte4" ColumnName="Byte4" />
+          <ScalarProperty Name="Byte3" ColumnName="Byte3" />
+          <ScalarProperty Name="Byte2" ColumnName="Byte2" />
+          <ScalarProperty Name="Byte1" ColumnName="Byte1" />
+          <ScalarProperty Name="Direction" ColumnName="Direction" />
+          <ScalarProperty Name="Speed" ColumnName="Speed" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="TrackerID" ColumnName="TrackerID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_HistoryZone">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_HistoryZone">
+        <MappingFragment StoreEntitySet="tb_HistoryZone">
+          <ScalarProperty Name="Out" ColumnName="Out" />
+          <ScalarProperty Name="Ins" ColumnName="Ins" />
+          <ScalarProperty Name="States" ColumnName="States" />
+          <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+          <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+          <ScalarProperty Name="TagId" ColumnName="TagId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_MQTT">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_MQTT">
+        <MappingFragment StoreEntitySet="tb_MQTT">
+          <ScalarProperty Name="MQTTSecurePort" ColumnName="MQTTSecurePort" />
+          <ScalarProperty Name="MQTTNormalPort" ColumnName="MQTTNormalPort" />
+          <ScalarProperty Name="MQTTWebsocketPort" ColumnName="MQTTWebsocketPort" />
+          <ScalarProperty Name="MQTTServer" ColumnName="MQTTServer" />
+          <ScalarProperty Name="MQTTPassword" ColumnName="MQTTPassword" />
+          <ScalarProperty Name="MQTTUser" ColumnName="MQTTUser" />
+          <ScalarProperty Name="TopicName" ColumnName="TopicName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Site">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Site">
+        <MappingFragment StoreEntitySet="tb_Site">
+          <ScalarProperty Name="isRatioZoom" ColumnName="isRatioZoom" />
+          <ScalarProperty Name="isRatioDefault" ColumnName="isRatioDefault" />
+          <ScalarProperty Name="isRatio" ColumnName="isRatio" />
+          <ScalarProperty Name="SiteDistance" ColumnName="SiteDistance" />
+          <ScalarProperty Name="InitiatorY" ColumnName="InitiatorY" />
+          <ScalarProperty Name="InitiatorX" ColumnName="InitiatorX" />
+          <ScalarProperty Name="CanvasHeight" ColumnName="CanvasHeight" />
+          <ScalarProperty Name="CanvasWidth" ColumnName="CanvasWidth" />
+          <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Staff">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_Staff">
+        <MappingFragment StoreEntitySet="tb_Staff">
+          <ScalarProperty Name="Images" ColumnName="Images" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ID_Device" ColumnName="ID_Device" />
+          <ScalarProperty Name="Id_Site" ColumnName="Id_Site" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Id_Department" ColumnName="Id_Department" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_tracker">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_tracker">
+        <MappingFragment StoreEntitySet="tb_tracker">
+          <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="TrackerID" ColumnName="TrackerID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_UWBLocation">
+      <EntityTypeMapping TypeName="siyosane_uwb_prototypeModel.tb_UWBLocation">
+        <MappingFragment StoreEntitySet="tb_UWBLocation">
+          <ScalarProperty Name="ZoneID" ColumnName="ZoneID" />
+          <ScalarProperty Name="atTime" ColumnName="atTime" />
+          <ScalarProperty Name="getRSSI" ColumnName="getRSSI" />
+          <ScalarProperty Name="getZ" ColumnName="getZ" />
+          <ScalarProperty Name="getY" ColumnName="getY" />
+          <ScalarProperty Name="getX" ColumnName="getX" />
+          <ScalarProperty Name="tagMAC" ColumnName="tagMAC" />
+          <ScalarProperty Name="tagID" ColumnName="tagID" />
+          <ScalarProperty Name="gatewayMAC" ColumnName="gatewayMAC" />
+          <ScalarProperty Name="gatewayID" ColumnName="gatewayID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

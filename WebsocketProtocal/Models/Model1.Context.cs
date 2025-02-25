@@ -26,5 +26,17 @@ namespace WebsocketProtocal.Models
         }
     
         public virtual DbSet<tb_Device> tb_Device { get; set; }
+        public virtual DbSet<tb_account> tb_account { get; set; }
+        public virtual DbSet<tb_BlockZone> tb_BlockZone { get; set; }
+        public virtual DbSet<tb_BlockZoneDetail> tb_BlockZoneDetail { get; set; }
+        public virtual DbSet<tb_Department> tb_Department { get; set; }
+        public virtual DbSet<tb_Floorplan> tb_Floorplan { get; set; }
+        public virtual DbSet<tb_GPSLocation> tb_GPSLocation { get; set; }
+        public virtual DbSet<tb_HistoryZone> tb_HistoryZone { get; set; }
+        public virtual DbSet<tb_MQTT> tb_MQTT { get; set; }
+        public virtual DbSet<tb_Site> tb_Site { get; set; }
+        public virtual DbSet<tb_Staff> tb_Staff { get; set; }
+        public virtual DbSet<tb_tracker> tb_tracker { get; set; }
+        public virtual DbSet<tb_UWBLocation> tb_UWBLocation { get; set; }
     }
 }

@@ -215,28 +215,28 @@ public class WebSocketServer
          .Select(g => g.OrderByDescending(a => a.Timestamp).FirstOrDefault()) // Lấy đối tượng có Timestamp mới nhất
          .ToList(); // Chuyển đổi kết quả về danh sách
 
-            foreach(var item in highestPointsByType)
-            {
-                var getAnchor1 = lstdEvice.Where(m => m.DeviceID == item.Anchors[0].Id).FirstOrDefault();
-                var getAnchor2 = lstdEvice.Where(m => m.DeviceID == item.Anchors[1].Id).FirstOrDefault();
-                var getAnchor3 = lstdEvice.Where(m => m.DeviceID == item.Anchors[2].Id).FirstOrDefault();
-                var findPosition = Helper.getDeviceLocation(item.Anchors[0].Distance, item.Anchors[1].Distance, item.Anchors[2].Distance, float.Parse(getAnchor1.posX.Value.ToString()), float.Parse(getAnchor2.posX.Value.ToString()), float.Parse(getAnchor3.posX.Value.ToString()), float.Parse(getAnchor1.posY.Value.ToString()), float.Parse(getAnchor2.posY.Value.ToString()), float.Parse(getAnchor3.posY.Value.ToString()));
-                item.getX = float.Parse(findPosition.DeviceCoorX.Value.ToString());
-                item.getY = float.Parse(findPosition.DeviceCoorY.Value.ToString());
-            }
+            //foreach(var item in highestPointsByType)
+            //{
+            //    var getAnchor1 = lstdEvice.Where(m => m.DeviceID == item.Anchors[0].Id).FirstOrDefault();
+            //    var getAnchor2 = lstdEvice.Where(m => m.DeviceID == item.Anchors[1].Id).FirstOrDefault();
+            //    var getAnchor3 = lstdEvice.Where(m => m.DeviceID == item.Anchors[2].Id).FirstOrDefault();
+            //    var findPosition = Helper.getDeviceLocation(item.Anchors[0].Distance, item.Anchors[1].Distance, item.Anchors[2].Distance, float.Parse(getAnchor1.posX.Value.ToString()), float.Parse(getAnchor2.posX.Value.ToString()), float.Parse(getAnchor3.posX.Value.ToString()), float.Parse(getAnchor1.posY.Value.ToString()), float.Parse(getAnchor2.posY.Value.ToString()), float.Parse(getAnchor3.posY.Value.ToString()));
+            //    item.getX = float.Parse(findPosition.DeviceCoorX.Value.ToString());
+            //    item.getY = float.Parse(findPosition.DeviceCoorY.Value.ToString());
+            //}
             // Chuyển đổi danh sách sang JSON
 
             string jsonResult = JsonConvert.SerializeObject(highestPointsByType, Formatting.Indented);
             NotifyClients(jsonResult);
         }
-        processingTimer = new Timer(ProcessMessages, null, 1000, Timeout.Infinite); // Xử lý sau 10 giây
+        processingTimer = new Timer(ProcessMessages, null, 200, Timeout.Infinite); // Xử lý sau 10 giây
     }
     // Khởi động timer
     private void StartProcessingTimer()
     {
         if (processingTimer == null)
         {
-            processingTimer = new Timer(ProcessMessages, null,1000, Timeout.Infinite); // Xử lý sau 10 giây
+            processingTimer = new Timer(ProcessMessages, null, 200, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     private async Task NotifyClients(string notification)
@@ -260,7 +260,7 @@ public class WebSocketServer
         public int Timestamp { get; set; }
         public float getX { get; set; }
         public float getY{ get; set; } 
-        public List<Anchor> Anchors { get; set; }
+        //public List<Anchor> Anchors { get; set; }
     }
 
     public class Anchor

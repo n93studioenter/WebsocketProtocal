@@ -1,5 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="siyosane_uwb_prototypeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tb_account">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccName" Type="nvarchar" MaxLength="500" />
+    <Property Name="AccPassword" Type="nvarchar" MaxLength="500" />
+    <Property Name="Fullname" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="tb_BlockZone">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="SiteID" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_BlockZoneDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Idparent" Type="int" />
+    <Property Name="Pointx" Type="float" />
+    <Property Name="Pointy" Type="float" />
+  </EntityType>
+  <EntityType Name="tb_Department">
+    <Key>
+      <PropertyRef Name="DepartmentID" />
+    </Key>
+    <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+  </EntityType>
   <EntityType Name="tb_Device">
     <Key>
       <PropertyRef Name="ID" />
@@ -18,7 +51,128 @@
     <Property Name="Colors" Type="nvarchar" MaxLength="50" />
     <Property Name="IsShow" Type="int" />
   </EntityType>
+  <EntityType Name="tb_Floorplan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SiteID" Type="int" />
+    <Property Name="FloorplanName" Type="nvarchar" MaxLength="500" />
+    <Property Name="PathLocation" Type="nvarchar" MaxLength="500" />
+    <Property Name="FlWidth" Type="int" />
+    <Property Name="FlHeight" Type="int" />
+    <Property Name="CanvasTop" Type="int" />
+    <Property Name="CanvasLeft" Type="int" />
+    <Property Name="CenterX" Type="int" />
+    <Property Name="CenterY" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_GPSLocation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrackerID" Type="nvarchar" MaxLength="100" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="Speed" Type="nvarchar" MaxLength="100" />
+    <Property Name="Direction" Type="nvarchar" MaxLength="100" />
+    <Property Name="Byte1" Type="nvarchar" MaxLength="2" />
+    <Property Name="Byte2" Type="nvarchar" MaxLength="2" />
+    <Property Name="Byte3" Type="nvarchar" MaxLength="2" />
+    <Property Name="Byte4" Type="nvarchar" MaxLength="2" />
+    <Property Name="atTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tb_HistoryZone">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TagId" Type="nvarchar" MaxLength="250" />
+    <Property Name="ZoneId" Type="int" />
+    <Property Name="ZoneName" Type="nvarchar" MaxLength="500" />
+    <Property Name="States" Type="int" />
+    <Property Name="Ins" Type="datetime" />
+    <Property Name="Out" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tb_MQTT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TopicName" Type="nvarchar" MaxLength="500" />
+    <Property Name="MQTTUser" Type="nvarchar" MaxLength="500" />
+    <Property Name="MQTTPassword" Type="nvarchar" MaxLength="500" />
+    <Property Name="MQTTServer" Type="nvarchar" MaxLength="500" />
+    <Property Name="MQTTWebsocketPort" Type="int" />
+    <Property Name="MQTTNormalPort" Type="int" />
+    <Property Name="MQTTSecurePort" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_Site">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SiteName" Type="nvarchar" MaxLength="500" />
+    <Property Name="CanvasWidth" Type="int" />
+    <Property Name="CanvasHeight" Type="int" />
+    <Property Name="InitiatorX" Type="int" />
+    <Property Name="InitiatorY" Type="int" />
+    <Property Name="SiteDistance" Type="int" />
+    <Property Name="isRatio" Type="float" />
+    <Property Name="isRatioDefault" Type="float" />
+    <Property Name="isRatioZoom" Type="float" />
+  </EntityType>
+  <EntityType Name="tb_Staff">
+    <Key>
+      <PropertyRef Name="StaffID" />
+    </Key>
+    <Property Name="StaffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="Id_Department" Type="int" />
+    <Property Name="Address" Type="nvarchar" MaxLength="500" />
+    <Property Name="Id_Site" Type="int" />
+    <Property Name="ID_Device" Type="int" />
+    <Property Name="Email" Type="nvarchar" MaxLength="500" />
+    <Property Name="Images" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="tb_tracker">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrackerID" Type="nvarchar" MaxLength="255" />
+    <Property Name="AccountID" Type="int" />
+    <Property Name="TopicID" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_UWBLocation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="gatewayID" Type="nvarchar" MaxLength="200" />
+    <Property Name="gatewayMAC" Type="nvarchar" MaxLength="200" />
+    <Property Name="tagID" Type="nvarchar" MaxLength="200" />
+    <Property Name="tagMAC" Type="nchar" MaxLength="10" />
+    <Property Name="getX" Type="nvarchar" MaxLength="200" />
+    <Property Name="getY" Type="nvarchar" MaxLength="200" />
+    <Property Name="getZ" Type="nvarchar" MaxLength="200" />
+    <Property Name="getRSSI" Type="nvarchar" MaxLength="200" />
+    <Property Name="atTime" Type="datetime" />
+    <Property Name="ZoneID" Type="int" />
+  </EntityType>
   <EntityContainer Name="siyosane_uwb_prototypeModelStoreContainer">
+    <EntitySet Name="tb_account" EntityType="Self.tb_account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_BlockZone" EntityType="Self.tb_BlockZone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_BlockZoneDetail" EntityType="Self.tb_BlockZoneDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Department" EntityType="Self.tb_Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Device" EntityType="Self.tb_Device" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Floorplan" EntityType="Self.tb_Floorplan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_GPSLocation" EntityType="Self.tb_GPSLocation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_HistoryZone" EntityType="Self.tb_HistoryZone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_MQTT" EntityType="Self.tb_MQTT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Site" EntityType="Self.tb_Site" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_tracker" EntityType="Self.tb_tracker" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_UWBLocation" EntityType="Self.tb_UWBLocation" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

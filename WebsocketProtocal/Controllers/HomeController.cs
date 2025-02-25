@@ -14,7 +14,10 @@ namespace WebsocketProtocal.Controllers
         public ActionResult Index()
         {
             //test thuật toán tam giác
-            var getpoint = Helper.getDeviceLocation(2000,7000,3000,0,8,0,0,0,7); 
+            var getpoint = Helper.getDeviceLocation(2000,7000,3000,0,8,0,0,0,7);
+            var db = new siyosane_uwb_prototypeEntities();
+            ViewBag.lstSite = db.tb_Site.Where(m => m.ID == 1).FirstOrDefault();
+            ViewBag.listfloor = db.tb_Floorplan.Where(m => m.SiteID == 1).FirstOrDefault();
             return View();
         }
 

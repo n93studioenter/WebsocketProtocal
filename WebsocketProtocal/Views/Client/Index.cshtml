@@ -29,9 +29,8 @@
         var x = 0;
         var y = 0;
         var isType = "";
-        var distanceA = 3;
-        var distanceB =7;
-        var distanceC = 2;
+        var distanceA = 0.86;
+        var distanceB = 2.25; 
         function getRandomFloatInRange(min, max) {
             return Math.random() * (max - min) + min;
         }
@@ -39,23 +38,25 @@
 
             //connection.send(`${x + randomNumberx},${y + randomNumbery}`);
             //console.log(`${x + randomNumberx},${y + randomNumbery}`)
-            var rA = getRandomFloatInRange(100, 200);
-            var rB = getRandomFloatInRange(100, 200);
-            var rC = getRandomFloatInRange(100, 200);
-
+            var rA = getRandomFloatInRange(0,0.1);
+            distanceA += rA;
+            distanceB -= rA;
+            //var rB = getRandomFloatInRange(100, 200);
+            //var rC = getRandomFloatInRange(100, 200); 
+            var rA = 0;
+            var rB = 0;
+            var rC = 0;
             var data = {
                 "tagID": $("#slDevice").val(),
-                "timestamp": 1,
-                "anchors": [
-                    { "id": 'D626', "distance": distanceA + rA },
-                    { "id": '952E', "distance": distanceB + rB },
-                    { "id": '0529', "distance": distanceC + rC }
-                ]
+                "getX": distanceA,
+                "getY": distanceB,
+                "timestamp": 1
             };
 
             // Chuyển đổi đối tượng thành chuỗi JSON
-            var jsonString = JSON.stringify(data);
+            var jsonString = JSON.stringify(data); 
             connection.send(jsonString);
+            
         }
 
         // Gọi hàm mỗi 3 giây (3000 ms)
@@ -91,7 +92,7 @@
                 });
                 if (isType == "Tag") {
                     alert("tag do")
-                    const intervalId = setInterval(performAction, 400);
+                    const intervalId = setInterval(performAction, 200);
                 }
               
                 $("#connect").html("Disconect");
