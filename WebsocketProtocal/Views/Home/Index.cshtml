@@ -21,15 +21,20 @@
             top: 0;
             left: 0;
         }
-        .canvasinfo{
-            float:left;
-            width:30%;
-            max-height:200px;
-            overflow:scroll;
+        .canvasinfo {
+            float: left;
+            width: 28%;
+            max-height: 544px;
+            border: 1px solid #bdbdbd;
+            overflow: scroll;
         }
         .canvasContainerbox{
             float:left;
             width:70%;
+        }
+        .canvasinfo li{
+            display:block;
+            margin:10px 0px;
         }
     </style>
 </head>
@@ -122,7 +127,6 @@
         originY += (mouseY - originY) * (1 - scaleAmount);
 
         scale = newScale;
-        console.log(scale)
         draw();
     });
     function drawcondinate() {
@@ -147,11 +151,7 @@
         //ctx.fillText("5", 20, 500); // Vẽ văn bản phía trên
         //ctx.fillText("6", 20, 600); // Vẽ văn bản phía trên
         //ctx.fillText("7", 20, 700); // Vẽ văn bản phía trên
-        ctx.fillStyle = 'red'; // Màu trắng
-        ctx.beginPath();
-        ctx.arc(128, 127, 5, 0, Math.PI * 2); // Đảo ngược tọa độ y
-        ctx.arc(529, 32, 5, 0, Math.PI * 2); // Đảo ngược tọa độ y
-        ctx.fill();
+      
     }
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,7 +162,6 @@
         // Vẽ hình ảnh
         newWidthimg = FlWidth + (FlWidth * (isRatioZoom / 100 * ZoomSate));
         newheightimg = FlHeight + (FlHeight * (isRatioZoom / 100 * ZoomSate));
-        console.log(`${newWidthimg}   ${newheightimg} ||   ${img.width} ${img.height}`)
         ctx.drawImage(img, 0, 0, newWidthimg, newheightimg);
         // ctx.drawImage(img, 0, 0, img.width, img.height); // Vẽ hình ảnh với kích thước thực
         drawcondinate();
@@ -184,20 +183,20 @@
         // Vẽ hình tròn lớn màu trắng
         ctx.fillStyle = 'white'; // Màu trắng
         ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2); // Hình tròn lớn
+        ctx.arc(x, y, 10, 0, Math.PI * 2); // Hình tròn lớn
         ctx.fill();
 
         // Vẽ hình tròn nhỏ màu đỏ
         ctx.fillStyle = 'red'; // Màu đỏ
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI * 2); // Hình tròn nhỏ
+        ctx.arc(x, y,5, 0, Math.PI * 2); // Hình tròn nhỏ
         ctx.fill();
 
         // Vẽ văn bản
         ctx.fillStyle = 'black'; // Màu chữ
-        ctx.font = '15px Arial'; // Font chữ
+        ctx.font = '12px Arial'; // Font chữ
         ctx.textAlign = 'center'; // Căn giữa
-        ctx.fillText(DeviceID, x, y - 25); // Vẽ văn bản phía trên
+        ctx.fillText(DeviceID, x, y - 15); // Vẽ văn bản phía trên
     }
 
     // Sự kiện nút nhấn để vẽ hình tròn
@@ -207,20 +206,40 @@
     });
 </script>
 <script>
+    function getCurrentTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
     let connection;
     connection = new WebSocket("ws://localhost:8080/");
     connection.onopen = () => {
         //console.log("Connected to server");
         //const li = document.createElement("li");
         //document.getElementById("messagesList").appendChild(li);
-        connection.send("test");
+        var messageConnect = {
+            "DeviceID":"Manager",
+            "Status": "connect", 
+        }
+        const jsonOutput = JSON.stringify(messageConnect);
+        connection.send(jsonOutput);
     };
-
+    var fa = 2.41;
+    var fb = 2.77;
+    var fc = 0.08;
     connection.onmessage = (event) => {
         const li = document.createElement("li");
         li.textContent = `Client: ${event.data}`;
-
+        console.log(event.data)
+        //var aa = `•	Client: [ { "TagID": "42A8", "Timestamp": ${getCurrentTime()},"Anchors": [ { "Id": "D626", "Distance": ${fa}}, { "Id": "952E", "Distance": ${fb} }, { "Id": "0529", "Distance": ${fc}} ] } ]`;
+        //fa += 0.1;
+        //fb += 0.1;
+        //fc += 0.1;
+        //li.textContent = aa;
         //Trường hợp là device kết nối
+        var resul = [];
         if (event.data.includes('has connected')) {
             getDevicebyname(event.data)
         }
@@ -233,11 +252,11 @@
                 const results = JSON.parse(event.data); // Chuyển đổi phản hồi thành JSON
                 // Lấy giá trị TagID, getX, getY
                 $.each(results, function (index, item) {
-                    var tagID = item.TagID;
+                    var DeviceID = item.DeviceID;
                     var getX = item.getX;
                     var getY = item.getY;
                     points.forEach(point => {
-                        if (point.DeviceID === tagID) {
+                        if (point.DeviceID === DeviceID) {
                             // Nếu đã tồn tại, cập nhật x, y
                             var newx = parseInt(getX * 1000 * px) ;
                             var newy = parseInt(getY * 1000 * px) * (-1);  
@@ -245,13 +264,21 @@
                             point.y = newy + InitiatorY; 
                         }
                     });
-
-                    console.log(points)
+                    resul = results;
                     draw(); // Vẽ lại canvas
                 });
             }
         }
-        // Vẽ điểm hình tròn tại tọa độ (20, 20)
+        const outputData = resul.map(item => ({
+            DeviceID: item.DeviceID,
+            Timestamp: item.Timestamp,
+            Status: item.Status,
+            Data: item.Data
+        }));
+        const jsonOutput = JSON.stringify(outputData, null, 2);
+        if (resul.length !== 0) {
+            li.textContent = `Client: ${jsonOutput}`;
+        }
         document.getElementById("messagesList").appendChild(li);
     };
     function deleteDevicebyname(DeviceName) {
@@ -266,8 +293,7 @@
             type: 'GET',
             cache: false,
             success: function (result) {  
-                points = points.filter(point => point.x !== (result.posX*1000) || point.y !== (result.posY*1000));
-                console.log(points)
+                points = points.filter(point => point.DeviceID !== (result.DeviceID) );
                 draw(); // Vẽ lại canvas
             }
         });

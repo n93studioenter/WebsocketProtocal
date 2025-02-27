@@ -38,25 +38,29 @@
 
             //connection.send(`${x + randomNumberx},${y + randomNumbery}`);
             //console.log(`${x + randomNumberx},${y + randomNumbery}`)
-            var rA = getRandomFloatInRange(0,0.1);
+            var rA = getRandomFloatInRange(0,0.05);
             distanceA += rA;
             distanceB -= rA;
             //var rB = getRandomFloatInRange(100, 200);
             //var rC = getRandomFloatInRange(100, 200); 
+            const currentDateTime = new Date().toISOString()
             var rA = 0;
             var rB = 0;
             var rC = 0;
-            var data = {
-                "tagID": $("#slDevice").val(),
-                "getX": distanceA,
-                "getY": distanceB,
-                "timestamp": 1
-            };
 
+            var data = {
+                "DeviceID": $("#slDevice").val(),
+                "Timestamp": currentDateTime,
+                "Data":
+                    [
+                        { "Id": "D626", "Distance": 5.83 },
+                        { "Id": "952E", "Distance": 1.44 },
+                        { "Id": "0529", "Distance": 4.23 },
+                    ]
+            };
             // Chuyển đổi đối tượng thành chuỗi JSON
             var jsonString = JSON.stringify(data); 
             connection.send(jsonString);
-            
         }
 
         // Gọi hàm mỗi 3 giây (3000 ms)
@@ -73,7 +77,14 @@
 
             connection.onopen = () => {
                 console.log("Connected to server");
-                connection.send("The device," + $("#slDevice").val()); 
+                const currentDateTime = new Date().toISOString()
+                var messageConnect = {
+                    "DeviceID": $("#slDevice").val(),
+                    "Status": "connect", 
+                    "timestamp": currentDateTime,
+                }
+                const jsonOutput = JSON.stringify(messageConnect);
+                connection.send(jsonOutput); 
                 var param = {
                     DeviceName: $("#slDevice").val()
                 }
@@ -91,8 +102,7 @@
                     }
                 });
                 if (isType == "Tag") {
-                    alert("tag do")
-                    const intervalId = setInterval(performAction, 200);
+                    const intervalId = setInterval(performAction, 400);
                 }
               
                 $("#connect").html("Disconect");
@@ -104,7 +114,6 @@
             connection.onmessage = (event) => { 
                 const li = document.createElement("li");
                 li.textContent = `${event.data}`;
-
                 document.getElementById("messagesList").append(li);
             };
 

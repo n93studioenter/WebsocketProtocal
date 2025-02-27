@@ -100,6 +100,7 @@ public class WebSocketServer
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+               
                     var getname = lstDevice.FirstOrDefault(m => m.Value == clientEndpoint).Key;
                     _clients.TryRemove(webSocket, out _);
                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed bxy the client", CancellationToken.None);
@@ -117,29 +118,29 @@ public class WebSocketServer
                 else
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                  
                     System.Diagnostics.Debug.WriteLine("Received from client: " + message);
-                    if (message.Contains("The device"))
+                    Tag Tag = JsonConvert.DeserializeObject<Tag>(message);
+                    if (Tag.Status=="connect")
                     { 
 
-                        StartProcessingTimer();
-                        var getsplit = message.Split(',');
-                        if (!lstDevice.ContainsKey(getsplit[1]))
+                        StartProcessingTimer(); 
+                        if (!lstDevice.ContainsKey(Tag.DeviceID))
                         {
-                            lstDevice.Add(getsplit[1], clientEndpoint);
+                            lstDevice.Add(Tag.DeviceID, clientEndpoint);
                         }
 
                         //add device vào lstDevices mục đích để clientManager load lại
                         tb_Device tb_Device = new tb_Device();
                         tb_Device.DeviceName = message;
                         lstDevices.Add(tb_Device);
-                        await sendFirtClient(firtWebsocket, getsplit[1] + " has connected");
+                        await sendFirtClient(firtWebsocket, Tag.DeviceID + " has connected");
                     }
                     else
                     {
                         if (readData == true)
                         {
                             messageQueue.Enqueue(message);
-
                         }
                     }
                    
@@ -211,32 +212,33 @@ public class WebSocketServer
                 }
             }
             var highestPointsByType = lstTag
-         .GroupBy(a => a.TagID) // Nhóm theo TagID
+         .GroupBy(a => a.DeviceID) // Nhóm theo TagID
          .Select(g => g.OrderByDescending(a => a.Timestamp).FirstOrDefault()) // Lấy đối tượng có Timestamp mới nhất
          .ToList(); // Chuyển đổi kết quả về danh sách
 
-            //foreach(var item in highestPointsByType)
-            //{
-            //    var getAnchor1 = lstdEvice.Where(m => m.DeviceID == item.Anchors[0].Id).FirstOrDefault();
-            //    var getAnchor2 = lstdEvice.Where(m => m.DeviceID == item.Anchors[1].Id).FirstOrDefault();
-            //    var getAnchor3 = lstdEvice.Where(m => m.DeviceID == item.Anchors[2].Id).FirstOrDefault();
-            //    var findPosition = Helper.getDeviceLocation(item.Anchors[0].Distance, item.Anchors[1].Distance, item.Anchors[2].Distance, float.Parse(getAnchor1.posX.Value.ToString()), float.Parse(getAnchor2.posX.Value.ToString()), float.Parse(getAnchor3.posX.Value.ToString()), float.Parse(getAnchor1.posY.Value.ToString()), float.Parse(getAnchor2.posY.Value.ToString()), float.Parse(getAnchor3.posY.Value.ToString()));
-            //    item.getX = float.Parse(findPosition.DeviceCoorX.Value.ToString());
-            //    item.getY = float.Parse(findPosition.DeviceCoorY.Value.ToString());
-            //}
+            foreach (var item in highestPointsByType)
+            {
+                var getAnchor1 = lstdEvice.Where(m => m.DeviceID == item.Data[0].Id).FirstOrDefault();
+                var getAnchor2 = lstdEvice.Where(m => m.DeviceID == item.Data[1].Id).FirstOrDefault();
+                var getAnchor3 = lstdEvice.Where(m => m.DeviceID == item.Data[2].Id).FirstOrDefault();
+                var findPosition = Helper.getDeviceLocation(item.Data[0].Distance * 1000, item.Data[1].Distance * 1000, item.Data[2].Distance * 1000, float.Parse(getAnchor1.posX.Value.ToString()), float.Parse(getAnchor2.posX.Value.ToString()), float.Parse(getAnchor3.posX.Value.ToString()), float.Parse(getAnchor1.posY.Value.ToString()), float.Parse(getAnchor2.posY.Value.ToString()), float.Parse(getAnchor3.posY.Value.ToString()));
+                item.getX = float.Parse(findPosition.DeviceCoorX.Value.ToString());
+                item.getY = float.Parse(findPosition.DeviceCoorY.Value.ToString());
+                item.Status = "connect";
+            }
             // Chuyển đổi danh sách sang JSON
 
             string jsonResult = JsonConvert.SerializeObject(highestPointsByType, Formatting.Indented);
             NotifyClients(jsonResult);
         }
-        processingTimer = new Timer(ProcessMessages, null, 200, Timeout.Infinite); // Xử lý sau 10 giây
+        processingTimer = new Timer(ProcessMessages, null, 1000, Timeout.Infinite); // Xử lý sau 10 giây
     }
     // Khởi động timer
     private void StartProcessingTimer()
     {
         if (processingTimer == null)
         {
-            processingTimer = new Timer(ProcessMessages, null, 200, Timeout.Infinite); // Xử lý sau 10 giây
+            processingTimer = new Timer(ProcessMessages, null, 1000, Timeout.Infinite); // Xử lý sau 10 giây
         }
     }
     private async Task NotifyClients(string notification)
@@ -256,11 +258,12 @@ public class WebSocketServer
     }
     public class Tag
     {
-        public string TagID { get; set; }
-        public int Timestamp { get; set; }
+        public string DeviceID { get; set; }
+        public string Status { get; set; }
+        public DateTime Timestamp { get; set; }
         public float getX { get; set; }
-        public float getY{ get; set; } 
-        //public List<Anchor> Anchors { get; set; }
+        public float getY { get; set; } 
+        public List<Anchor> Data { get; set; }
     }
 
     public class Anchor

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Khoảng Cách</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Tính Khoảng Cách từ Điểm F đến A, B, C</h1>
+    <label for="fX">Tọa độ F (X): </label>
+    <input type="number" id="fX" value="1"><br>
+    <label for="fY">Tọa độ F (Y): </label>
+    <input type="number" id="fY" value="1"><br>
+    <button id="calculate">Tính Khoảng Cách</button>
+
+    <h2>Kết Quả:</h2>
+    <div id="results"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#calculate').click(function() {
+                // Lấy tọa độ từ input
+                let fX = parseFloat($('#fX').val());
+                let fY = parseFloat($('#fY').val());
+
+                // Tọa độ của các điểm A, B, C
+                let node1X = 0.0, node1Y = 0.0; // Tọa độ của A
+                let node2X = 3.56302521008403, node2Y = 2.85042016806723; // Tọa độ của B
+                let node3X = 0.85, node3Y = 2.17; // Tọa độ của C
+
+                // Tính khoảng cách
+                let distanceToA = calculateDistance(fX, fY, node1X, node1Y);
+                let distanceToB = calculateDistance(fX, fY, node2X, node2Y);
+                let distanceToC = calculateDistance(fX, fY, node3X, node3Y);
+
+                // Hiển thị kết quả
+                $('#results').html(`
+                    Khoảng cách từ F đến A: ${distanceToA.toFixed(2)} m<br>
+                    Khoảng cách từ F đến B: ${distanceToB.toFixed(2)} m<br>
+                    Khoảng cách từ F đến C: ${distanceToC.toFixed(2)} m
+                `);
+            });
+
+            // Hàm tính khoảng cách Euclidean
+            function calculateDistance(x1, y1, x2, y2) {
+                return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            }
+        });
+    </script>
+</body>
+</html>
